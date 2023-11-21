@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    form {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      max-width: 100%;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    input:invalid {
+      border: 1px solid red;
+    }
+
+    input:focus:invalid {
+      outline: none;
+    }
+
+    input:focus:invalid+span {
+      display: block;
+      color: red;
+      font-weight: bold;
+      margin-top: -16px;
+      margin-bottom: 16px;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #output {
+      margin-top: 20px;
+    }
+    .error-message {
+      color: red;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    /* Additional Styles */
+    a {
+      color: #4caf50;
+      text-decoration: none;
+    }
+
+    label input[type="checkbox"] {
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="registrationForm">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
+    <span class="error-message" id="nameError"></span>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <span class="error-message" id="emailError"></span>
+
+    <label for="dob">Date of Birth (Between 18 and 55 years old):</label>
+    <input type="date" id="dob" name="dob" required>
+    <span class="error-message" id="dobError"></span>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+    <span class="error-message" id="passwordError"></span>
+
+    <label for="confirmPassword">Confirm Password:</label>
+    <input type="password" id="confirmPassword" name="confirmPassword" required>
+    <span class="error-message" id="confirmPasswordError"></span>
+
+    <label>
+      <input type="checkbox" id="termsCheckbox" required>
+      I agree to the <a href="#">Terms and Conditions</a>
+    </label>
+
+    <button type="button" onclick="submitForm()">Register</button>
+  </form>
+ 
+  <div id="output"></div>
+
+  <table id="dataTable">
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Password</th>
+      <th>Dob</th>
+      <th>Accepted terms?</th>
+    </tr>
+  </table>
+
+  <script>
+    window.onload = function () {
+      // Load previous data from localStorage
+      loadPreviousData();
+    };
+
+    function loadPreviousData() {
+      var savedData = JSON.parse(localStorage.getItem('registrationData'));
+      if (savedData) {
+        // Add previous data to the table
+        addRowToTable(savedData);
+      }
+    }
+
+    function submitForm() {
+      // (Your existing submitForm function remains unchanged)
+      // ...
+
+      // Clear form fields
+      document.getElementById("registrationForm").reset();
+
+      // Load previous data from localStorage and add to the table
+      loadPreviousData();
+    }
+
+    function addRowToTable(data) {
+      var table = document.getElementById("dataTable");
+      var row = table.insertRow(1);
+
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+      var cell3 = row.insertCell(2);
+      var cell4 = row.insertCell(3);
+      var cell5 = row.insertCell(4);
+
+      cell1.innerHTML = data.username;
+      cell2.innerHTML = data.email;
+      cell3.innerHTML = data.password;
+      cell4.innerHTML = data.dob;
+
+      // Display "Yes" if terms are accepted, "No" otherwise
+      cell5.innerHTML = data.acceptedTerms ? "Yes" : "No";
+    }
+
+    function isValidAge(dob) {
+      var dobDate = new Date(dob);
+      var currentDate = new Date();
+      var age = currentDate.getFullYear() - dobDate.getFullYear();
+      return age >= 18 && age <= 55;
+    }
+  </script>
+
+</body>
+</html>
